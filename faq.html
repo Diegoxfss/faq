@@ -7,6 +7,24 @@
         /* Add your styling here */
         body {
             font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        #navbar {
+            background-color: #333;
+            overflow: hidden;
+        }
+        #navbar a {
+            float: left;
+            display: block;
+            color: #f2f2f2;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+        #navbar a:hover {
+            background-color: #ddd;
+            color: black;
         }
         #chat-container {
             max-width: 400px;
@@ -25,10 +43,43 @@
             max-height: 200px;
             overflow-y: auto;
         }
+        #faq {
+            padding-top: 50px;
+        }
     </style>
     <title>XIMFO FAQ Chatbot</title>
 </head>
 <body>
+
+<div id="navbar">
+    <a href="#" onclick="scrollToSection('faq')">FAQ</a>
+    <a href="#" onclick="scrollToSection('contact')">Contact Admin</a>
+</div>
+
+<div id="faq">
+    <h2>FAQ Section</h2>
+    <div>
+        <!-- FAQ content here -->
+        <!-- Add your FAQ content here -->
+    </div>
+</div>
+
+<div id="contact" style="padding-top: 50px;">
+    <h2>Contact Admin</h2>
+    <form>
+        <!-- Your contact form fields here -->
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+
+        <label for="message">Message:</label>
+        <textarea id="message" name="message" required></textarea>
+
+        <input type="submit" value="Submit">
+    </form>
+</div>
 
 <div id="chat-container">
     <div id="chat-messages"></div>
@@ -87,6 +138,11 @@
     { question: "Can I use XIMFO for professional networking?", answer: "While XIMFO is primarily a content-sharing platform, you can connect with other users for professional networking. Utilize the 'Connect' feature on user profiles." },
     { question: "How secure is my personal information on XIMFO?", answer: "XIMFO prioritizes the security of user information. We use encryption protocols to safeguard your personal data and ensure a secure online environment." }
 ];
+
+function scrollToSection(sectionId) {
+    document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
+}
+
 function askQuestion() {
     const userInput = document.getElementById('user-input').value;
     const chatMessages = document.getElementById('chat-messages');
@@ -138,6 +194,3 @@ function calculateSimilarity(str1, str2) {
 
 </body>
 </html>
-
-
-
