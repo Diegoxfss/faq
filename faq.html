@@ -1,4 +1,8 @@
-<meta charset="UTF-8">
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Add your styling here -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -94,40 +98,38 @@
     <div id="navbar">
         <a href="#" onclick="showSection('faq')">FAQ</a>
         <a href="#" onclick="showSection('contact')">Contact Admin</a>
-        <a href="#" onclick="showSection('cv')">CV</a>
+        <a href="#" onclick="toggleCV()">CV</a>
     </div>
-<div id="faq">
-  
-    <div>
+
+    <div id="faq">
         <!-- FAQ content here -->
         <!-- Add your FAQ content here -->
     </div>
-</div>
 
-<div id="contact-container">
-    <h2>Contact Admin</h2>
-    <form id="contact-form">
-        <label for="name">Name:</label>
-        <input type="text" id="name" name="name" required>
+    <div id="contact-container">
+        <h2>Contact Admin</h2>
+        <form id="contact-form">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
 
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
 
-        <label for="phone">Phone Number:</label>
-        <input type="tel" id="phone" name="phone">
+            <label for="phone">Phone Number:</label>
+            <input type="tel" id="phone" name="phone">
 
-        <label for="message">Message:</label>
-        <textarea id="message" name="message" required></textarea>
+            <label for="message">Message:</label>
+            <textarea id="message" name="message" required></textarea>
 
-        <input type="submit" value="Submit">
-    </form>
-</div>
+            <input type="submit" value="Submit">
+        </form>
+    </div>
 
-<div id="chat-container">
-    <div id="chat-messages"></div>
-    <input type="text" id="user-input" placeholder="Type your question...">
-    <button onclick="askQuestion()">Ask</button>
-</div>
+    <div id="chat-container">
+        <div id="chat-messages"></div>
+        <input type="text" id="user-input" placeholder="Type your question...">
+        <button onclick="askQuestion()">Ask</button>
+    </div>
 
     <div id="cv-container">
         <h2>Your CV</h2>
@@ -139,28 +141,7 @@
 
 <script>
 
-       function toggleCV() {
-            const cvContainer = document.getElementById('cv-container');
-            const chatContainer = document.getElementById('chat-container');
-            const contactContainer = document.getElementById('contact-container');
-
-            // Hide chat and contact containers, show CV container
-            cvContainer.style.display = 'block';
-            chatContainer.style.display = 'none';
-            contactContainer.style.display = 'none';
-        }
-
-     function printCV() {
-            // Print the CV content
-            window.frames[0].print();
-        }
-
-        document.getElementById('contact-form').addEventListener('submit', function (event) {
-            event.preventDefault();
-            // Perform form submission logic here
-            // For demonstration purposes, let's show a notification
-            showNotification();
-        });
+   
  const faq = [
 
     { question: "What is XIMFO about?", answer: "XIMFO is a platform for sharing content related to profiles, pictures, studies, and YouTube videos." },
@@ -212,86 +193,90 @@
     { question: "How secure is my personal information on XIMFO?", answer: "XIMFO prioritizes the security of user information. We use encryption protocols to safeguard your personal data and ensure a secure online environment." }
 ];
 
+function toggleCV() {
+        const cvContainer = document.getElementById('cv-container');
+        const chatContainer = document.getElementById('chat-container');
+        const contactContainer = document.getElementById('contact-container');
 
-function scrollToSection(sectionId) {
-    document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
-}
+        // Hide chat and contact containers, show CV container
+        cvContainer.style.display = 'block';
+        chatContainer.style.display = 'none';
+        contactContainer.style.display = 'none';
+    }
 
-function showSection(sectionId) {
-    document.getElementById('faq').style.display = sectionId === 'faq' ? 'block' : 'none';
-    document.getElementById('contact-container').style.display = sectionId === 'contact' ? 'block' : 'none';
-}
+    function printCV() {
+        // Print the CV content
+        window.frames[0].print();
+    }
 
-function askQuestion() {
-    const userInput = document.getElementById('user-input').value;
-    const chatMessages = document.getElementById('chat-messages');
-
-    // Add user message to the chat
-    chatMessages.innerHTML += `<div>User: ${userInput}</div>`;
-
-    // Find the most similar question in the FAQ using a simple similarity calculation
-    const mostSimilarQuestion = findMostSimilarQuestion(userInput);
-
-    // Find the corresponding answer
-    const answer = faq.find(item => item.question === mostSimilarQuestion)?.answer || "I'm sorry, I don't understand that question.";
-
-    // Add bot's response to the chat
-    chatMessages.innerHTML += `<div>Bot: ${answer}</div>`;
-
-    // Clear user input
-    document.getElementById('user-input').value = '';
-}
-
-function findMostSimilarQuestion(userInput) {
-    // Use a simple similarity calculation
-    let maxSimilarity = -1;
-    let mostSimilarQuestion = '';
-
-    faq.forEach(item => {
-        const similarity = calculateSimilarity(userInput, item.question);
-
-        if (similarity > maxSimilarity) {
-            maxSimilarity = similarity;
-            mostSimilarQuestion = item.question;
-        }
+    document.getElementById('contact-form').addEventListener('submit', function (event) {
+        event.preventDefault();
+        // Perform form submission logic here
+        // For demonstration purposes, let's show a notification
+        showNotification();
     });
 
-    return mostSimilarQuestion;
-}
+    function showNotification() {
+        const notification = document.getElementById('notification');
+        notification.style.display = 'block';
 
-function calculateSimilarity(str1, str2) {
-    // A simple similarity calculation, you can replace it with a more sophisticated algorithm if needed
-    const set1 = new Set(str1.toLowerCase().split(' '));
-    const set2 = new Set(str2.toLowerCase().split(' '));
+        // Hide the notification after 3 seconds
+        setTimeout(() => {
+            notification.style.display = 'none';
+        }, 3000);
+    }
 
-    const intersection = new Set([...set1].filter(x => set2.has(x)));
-    const union = new Set([...set1, ...set2]);
+    function askQuestion() {
+        const userInput = document.getElementById('user-input').value;
+        const chatMessages = document.getElementById('chat-messages');
 
-       return intersection.size / union.size;
-}
+        // Add user message to the chat
+        chatMessages.innerHTML += `<div>User: ${userInput}</div>`;
 
-document.getElementById('contact-form').addEventListener('submit', function (event) {
-    event.preventDefault();
-    // Perform form submission logic here
-    // For demonstration purposes, let's show a notification
-    showNotification();
-});
+        // Find the most similar question in the FAQ using a simple similarity calculation
+        const mostSimilarQuestion = findMostSimilarQuestion(userInput);
 
-function showNotification() {
-    const notification = document.getElementById('notification');
-    notification.style.display = 'block';
+        // Find the corresponding answer
+        const answer = faq.find(item => item.question === mostSimilarQuestion)?.answer || "I'm sorry, I don't understand that question.";
 
-    // Hide the notification after 3 seconds
-    setTimeout(() => {
-        notification.style.display = 'none';
-    }, 3000);
-}
+        // Add bot's response to the chat
+        chatMessages.innerHTML += `<div>Bot: ${answer}</div>`;
 
-     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        // Clear user input
+        document.getElementById('user-input').value = '';
+    }
+
+    function findMostSimilarQuestion(userInput) {
+        // Use a simple similarity calculation
+        let maxSimilarity = -1;
+        let mostSimilarQuestion = '';
+
+        faq.forEach(item => {
+            const similarity = calculateSimilarity(userInput, item.question);
+
+            if (similarity > maxSimilarity) {
+                maxSimilarity = similarity;
+                mostSimilarQuestion = item.question;
+            }
+        });
+
+        return mostSimilarQuestion;
+    }
+
+    function calculateSimilarity(str1, str2) {
+        // A simple similarity calculation, you can replace it with a more sophisticated algorithm if needed
+        const set1 = new Set(str1.toLowerCase().split(' '));
+        const set2 = new Set(str2.toLowerCase().split(' '));
+
+        const intersection = new Set([...set1].filter(x => set2.has(x)));
+        const union = new Set([...set1, ...set2]);
+
+        return intersection.size / union.size;
+    }
 </script>
-
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
-</html>
 
+</html>
 
