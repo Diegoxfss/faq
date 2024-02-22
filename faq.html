@@ -27,8 +27,6 @@
         }
     </style>
     <title>XIMFO FAQ Chatbot</title>
-    <!-- Include the 'natural' library for vectorizer and cosine similarity -->
-    <script src="https://unpkg.com/natural@0.6.3/lib/natural.js"></script>
 </head>
 <body>
 
@@ -37,7 +35,7 @@
     <input type="text" id="user-input" placeholder="Type your question...">
     <button onclick="askQuestion()">Ask</button>
 </div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/string-similarity/1.0.0/string-similarity.min.js"></script>
+
 <script>
  const faq = [
 
@@ -89,8 +87,6 @@
     { question: "Can I use XIMFO for professional networking?", answer: "While XIMFO is primarily a content-sharing platform, you can connect with other users for professional networking. Utilize the 'Connect' feature on user profiles." },
     { question: "How secure is my personal information on XIMFO?", answer: "XIMFO prioritizes the security of user information. We use encryption protocols to safeguard your personal data and ensure a secure online environment." }
 ];
-
-
 function askQuestion() {
     const userInput = document.getElementById('user-input').value;
     const chatMessages = document.getElementById('chat-messages');
@@ -98,7 +94,7 @@ function askQuestion() {
     // Add user message to the chat
     chatMessages.innerHTML += `<div>User: ${userInput}</div>`;
 
-    // Find the most similar question in the FAQ using string-similarity
+    // Find the most similar question in the FAQ using a simple similarity calculation
     const mostSimilarQuestion = findMostSimilarQuestion(userInput);
 
     // Find the corresponding answer
@@ -112,12 +108,36 @@ function askQuestion() {
 }
 
 function findMostSimilarQuestion(userInput) {
-    // Use string-similarity to find the most similar question
-    const similarities = faq.map(item => stringSimilarity.compareTwoStrings(userInput, item.question));
-    const maxSimilarityIndex = similarities.indexOf(Math.max(...similarities));
+    // Use a simple similarity calculation
+    let maxSimilarity = -1;
+    let mostSimilarQuestion = '';
 
-    return faq[maxSimilarityIndex].question;
+    faq.forEach(item => {
+        const similarity = calculateSimilarity(userInput, item.question);
+
+        if (similarity > maxSimilarity) {
+            maxSimilarity = similarity;
+            mostSimilarQuestion = item.question;
+        }
+    });
+
+    return mostSimilarQuestion;
+}
+
+function calculateSimilarity(str1, str2) {
+    // A simple similarity calculation, you can replace it with a more sophisticated algorithm if needed
+    const set1 = new Set(str1.toLowerCase().split(' '));
+    const set2 = new Set(str2.toLowerCase().split(' '));
+
+    const intersection = new Set([...set1].filter(x => set2.has(x)));
+    const union = new Set([...set1, ...set2]);
+
+    return intersection.size / union.size;
 }
 </script>
+
 </body>
 </html>
+
+
+
