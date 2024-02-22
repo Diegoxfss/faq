@@ -78,6 +78,7 @@
             z-index: 1;
         }
     </style>
+    <script src="https://rawgit.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></script>
     <title>XIMFO FAQ Chatbot</title>
 </head>
 
@@ -92,11 +93,8 @@
     </div>
 
     <div id="faq">
-
-        <div>
-            <!-- FAQ content here -->
-            <!-- Add your FAQ content here -->
-        </div>
+        <!-- FAQ content here -->
+        <!-- Add your FAQ content here -->
     </div>
 
     <div id="contact-container">
@@ -128,13 +126,25 @@
             <input type="email" id="cv-email" name="cv-email" required>
 
             <label for="cv-phone">Phone Number:</label>
-            <input type="tel" id="cv-phone" name="cv-phone">
+            <input type="tel" id="cv-phone" name="cv-phone" required>
+
+            <label for="cv-address">Address:</label>
+            <textarea id="cv-address" name="cv-address" required></textarea>
 
             <label for="cv-education">Education:</label>
             <textarea id="cv-education" name="cv-education" required></textarea>
 
             <label for="cv-experience">Work Experience:</label>
             <textarea id="cv-experience" name="cv-experience" required></textarea>
+
+            <label for="cv-skills">Skills:</label>
+            <textarea id="cv-skills" name="cv-skills" required></textarea>
+
+            <label for="cv-certifications">Certifications:</label>
+            <textarea id="cv-certifications" name="cv-certifications"></textarea>
+
+            <label for="cv-languages">Languages:</label>
+            <textarea id="cv-languages" name="cv-languages"></textarea>
 
             <input type="submit" value="Print CV">
         </form>
@@ -147,7 +157,7 @@
     </div>
 
     <script>
-        const faq = [
+       const faq = [
 
             { question: "What is XIMFO about?", answer: "XIMFO is a platform for sharing content related to profiles, pictures, studies, and YouTube videos." },
             { question: "How can I update my profile?", answer: "You can update your profile by providing a new username, bio, and profile picture. Click the 'Update Profile' button to save the changes." },
@@ -212,7 +222,7 @@
 
                 if (similarity > maxSimilarity) {
                     maxSimilarity = similarity;
-                    mostSimilarQuestion = item.question;
+                                    mostSimilarQuestion = item.question;
                 }
             });
 
@@ -248,12 +258,15 @@
             const cvName = document.getElementById('cv-name').value;
             const cvEmail = document.getElementById('cv-email').value;
             const cvPhone = document.getElementById('cv-phone').value;
+            const cvAddress = document.getElementById('cv-address').value;
             const cvEducation = document.getElementById('cv-education').value;
             const cvExperience = document.getElementById('cv-experience').value;
+            const cvSkills = document.getElementById('cv-skills').value;
+            const cvCertifications = document.getElementById('cv-certifications').value;
+            const cvLanguages = document.getElementById('cv-languages').value;
 
-            // Display the CV in a new window
-            const cvWindow = window.open('', '_blank');
-            cvWindow.document.write(`
+            // Create a new HTML document for the CV
+            const cvContent = `
                 <html>
                 <head>
                     <title>${cvName}'s CV</title>
@@ -261,7 +274,7 @@
                         body {
                             font-family: 'Arial', sans-serif;
                         }
-                        h2 {
+                        h2, h3 {
                             color: #333;
                         }
                         p {
@@ -273,13 +286,30 @@
                     <h2>${cvName}'s CV</h2>
                     <p><strong>Email:</strong> ${cvEmail}</p>
                     <p><strong>Phone:</strong> ${cvPhone}</p>
-                    <p><strong>Education:</strong></p>
+                    <p><strong>Address:</strong></p>
+                    <p>${cvAddress}</p>
+                    <h3>Education</h3>
                     <p>${cvEducation}</p>
-                    <p><strong>Work Experience:</strong></p>
+                    <h3>Work Experience</h3>
                     <p>${cvExperience}</p>
+                    <h3>Skills</h3>
+                    <p>${cvSkills}</p>
+                    <h3>Certifications</h3>
+                    <p>${cvCertifications}</p>
+                    <h3>Languages</h3>
+                    <p>${cvLanguages}</p>
                 </body>
                 </html>
-            `);
+            `;
+
+            // Convert the HTML content to PDF using html2pdf library
+            html2pdf().from(cvContent).outputPdf(function (pdf) {
+                // Open a new window to display the PDF
+                const cvWindow = window.open('', '_blank');
+                cvWindow.document.write('<html><head><title>CV</title></head><body>');
+                cvWindow.document.write(`<embed width="100%" height="100%" name="plugin" src="${URL.createObjectURL(new Blob([pdf], { type: 'application/pdf' }))}" type="application/pdf">`);
+                cvWindow.document.write('</body></html>');
+            });
         }
 
         function showNotification() {
