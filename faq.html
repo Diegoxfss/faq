@@ -37,7 +37,7 @@
     <input type="text" id="user-input" placeholder="Type your question...">
     <button onclick="askQuestion()">Ask</button>
 </div>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/string-similarity/1.0.0/string-similarity.min.js"></script>
 <script>
  const faq = [
 
@@ -98,7 +98,7 @@ function askQuestion() {
     // Add user message to the chat
     chatMessages.innerHTML += `<div>User: ${userInput}</div>`;
 
-    // Find the most similar question in the FAQ using vectorizer and cosine similarity
+    // Find the most similar question in the FAQ using string-similarity
     const mostSimilarQuestion = findMostSimilarQuestion(userInput);
 
     // Find the corresponding answer
@@ -112,34 +112,12 @@ function askQuestion() {
 }
 
 function findMostSimilarQuestion(userInput) {
-    const vectorizer = new natural.TfIdf();
-    const userTokens = natural.WordTokenizer().tokenize(userInput);
+    // Use string-similarity to find the most similar question
+    const similarities = faq.map(item => stringSimilarity.compareTwoStrings(userInput, item.question));
+    const maxSimilarityIndex = similarities.indexOf(Math.max(...similarities));
 
-    // Add FAQ questions to the vectorizer
-    faq.forEach(item => {
-        vectorizer.addDocument(natural.WordTokenizer().tokenize(item.question));
-    });
-
-    // Vectorize the user input
-    const userVector = vectorizer.idf(userTokens);
-
-    // Find the most similar question using cosine similarity
-    let maxSimilarity = -1;
-    let mostSimilarQuestion = '';
-
-    faq.forEach(item => {
-        const questionVector = vectorizer.idf(natural.WordTokenizer().tokenize(item.question));
-        const similarity = natural.JaccardIndexSimilarity(userVector, questionVector);
-
-        if (similarity > maxSimilarity) {
-            maxSimilarity = similarity;
-            mostSimilarQuestion = item.question;
-        }
-    });
-
-    return mostSimilarQuestion;
+    return faq[maxSimilarityIndex].question;
 }
 </script>
-
 </body>
 </html>
