@@ -312,16 +312,23 @@
         </html>
     `;
 
-    // Convert the HTML content to PDF using html2pdf library
-    html2pdf().from(cvContent).outputPdf(function (pdf) {
+    const pdfPromise = html2pdf().from(cvContent).outputPdf();
+
+    // Open a new window to display the PDF
+    const cvWindow = window.open('', '_blank');
+
+    // Resolve the promise and handle the PDF data
+    pdfPromise.then((pdf) => {
         // Create a data URL for the PDF
         const pdfDataUrl = URL.createObjectURL(new Blob([pdf], { type: 'application/pdf' }));
 
-        // Open a new window to display the PDF
-        const cvWindow = window.open(pdfDataUrl, '_blank');
+        // Set the PDF data URL as the source for the new window
+        cvWindow.location.href = pdfDataUrl;
 
-        // Trigger the print dialog for the opened window
-        cvWindow.print();
+        // Once the PDF is loaded, trigger the print dialog
+        cvWindow.onload = function () {
+            cvWindow.print();
+        };
     });
 }
 
