@@ -367,25 +367,36 @@ function getCVContent() {
     const cvCertifications = document.getElementById('cv-certifications').value;
     const cvLanguages = document.getElementById('cv-languages').value;
 
-    // Create a new HTML document for the CV
-    const cvContent = `
+  const cvContent = `
         <html>
         <head>
             <title>${cvName}'s CV</title>
             <style>
                 body {
                     font-family: 'Arial', sans-serif;
+                    margin: 20px;
+                    padding: 20px;
+                    background-color: #f9f9f9;
                 }
-                h2, h3 {
+
+                h2 {
                     color: #333;
+                    border-bottom: 2px solid #333;
+                    padding-bottom: 5px;
                 }
+
                 p {
                     margin-bottom: 10px;
+                }
+
+                h3 {
+                    color: #333;
+                    margin-top: 15px;
                 }
             </style>
         </head>
         <body>
-            <h2>${cvName}   CV</h2>
+            <h2>${cvName} CV</h2>
             <p><strong>Email:</strong> ${cvEmail}</p>
             <p><strong>Phone:</strong> ${cvPhone}</p>
             <p><strong>Address:</strong></p>
@@ -406,7 +417,6 @@ function getCVContent() {
 
     return cvContent;
 }
-
 
   
          
