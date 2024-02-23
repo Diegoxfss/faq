@@ -189,7 +189,30 @@ textarea {
     background-color: #87cefa; /* Light Sky Blue */
     color: #333;
 }
+  /* Additional styles for chatbot layout adjustment */
+        .chat-message.user {
+            background-color: #add8e6; /* Light Blue for user questions */
+            color: #333;
+        }
 
+        .chat-message.bot {
+            background-color: #87cefa; /* Light Sky Blue for bot answers */
+            color: #333;
+        }
+
+        /* Adjusted button styles */
+        #user-input,
+        button {
+            background-color: #add8e6; /* Light Blue for buttons */
+            color: #333;
+        }
+
+        /* Chat message strip styles */
+        .chat-message {
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+        }
 
     </style>
     <script src="https://rawgit.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></script>
@@ -384,12 +407,13 @@ textarea {
     };
 }
 
-function saveCV() {
-    const cvContent = getCVContent();
+  function saveCV() {
+            const cvContent = getCVContent();
 
-    // Use html2pdf to create a PDF and save it
-    html2pdf().from(cvContent).save('CV.pdf');
-}
+            html2pdf().from(cvContent).save('CV.pdf');
+        }
+
+        function getCVContent() {
 
 function getCVContent() {
     // Gather CV details
