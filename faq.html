@@ -126,40 +126,42 @@
         </form>
     </div>
 
-    <div id="cv-container" style="display: none;">
-        <h2>CV</h2>
-        <form id="cv-form">
-            <label for="cv-name">Full Name:</label>
-            <input type="text" id="cv-name" name="cv-name" required>
+   <div id="cv-container" style="display: none;">
+    <h2>CV</h2>
+    <form id="cv-form">
+        <label for="cv-name">Full Name:</label>
+        <input type="text" id="cv-name" name="cv-name" required>
 
-            <label for="cv-email">Email:</label>
-            <input type="email" id="cv-email" name="cv-email" required>
+        <label for="cv-email">Email:</label>
+        <input type="email" id="cv-email" name="cv-email" required>
 
-            <label for="cv-phone">Phone Number:</label>
-            <input type="tel" id="cv-phone" name="cv-phone" required>
+        <label for="cv-phone">Phone Number:</label>
+        <input type="tel" id="cv-phone" name="cv-phone" required>
 
-            <label for="cv-address">Address:</label>
-            <textarea id="cv-address" name="cv-address" required></textarea>
+        <label for="cv-address">Address:</label>
+        <textarea id="cv-address" name="cv-address" required></textarea>
 
-            <label for="cv-education">Education:</label>
-            <textarea id="cv-education" name="cv-education" required></textarea>
+        <label for="cv-education">Education:</label>
+        <textarea id="cv-education" name="cv-education" required></textarea>
 
-            <label for="cv-experience">Work Experience:</label>
-            <textarea id="cv-experience" name="cv-experience" required></textarea>
+        <label for="cv-experience">Work Experience:</label>
+        <textarea id="cv-experience" name="cv-experience" required></textarea>
 
-            <label for="cv-skills">Skills:</label>
-            <textarea id="cv-skills" name="cv-skills" required></textarea>
+        <label for="cv-skills">Skills:</label>
+        <textarea id="cv-skills" name="cv-skills" required></textarea>
 
-            <label for="cv-certifications">Certifications:</label>
-            <textarea id="cv-certifications" name="cv-certifications"></textarea>
+        <label for="cv-certifications">Certifications:</label>
+        <textarea id="cv-certifications" name="cv-certifications"></textarea>
 
-            <label for="cv-languages">Languages:</label>
-            <textarea id="cv-languages" name="cv-languages"></textarea>
+        <label for="cv-languages">Languages:</label>
+        <textarea id="cv-languages" name="cv-languages"></textarea>
 
-            <input type="submit" value="Print CV">
-        </form>
-    </div>
-
+        <!-- Add "Save CV" and "Print CV" buttons -->
+        <button type="button" onclick="saveCV()">Save CV</button>
+        <button type="button" onclick="printCV()">Print CV</button>
+    </form>
+</div>
+    
     <div id="chat-container">
         <div id="chat-messages"></div>
         <input type="text" id="user-input" placeholder="Type your question...">
@@ -263,7 +265,29 @@
             printCV();
         });
 
-    function printCV() {
+        function printCV() {
+    const cvContent = getCVContent();
+
+    // Open a new window to display the CV content
+    const cvWindow = window.open('', '_blank');
+
+    // Set the CV content as the source for the new window
+    cvWindow.document.write(cvContent);
+
+    // Once the CV content is loaded, trigger the print dialog
+    cvWindow.onload = function () {
+        cvWindow.print();
+    };
+}
+
+function saveCV() {
+    const cvContent = getCVContent();
+
+    // Use html2pdf to create a PDF and save it
+    html2pdf().from(cvContent).save('CV.pdf');
+}
+
+function getCVContent() {
     // Gather CV details
     const cvName = document.getElementById('cv-name').value;
     const cvEmail = document.getElementById('cv-email').value;
@@ -312,18 +336,11 @@
         </html>
     `;
 
-    // Open a new window to display the CV content
-    const cvWindow = window.open('', '_blank');
-
-    // Set the CV content as the source for the new window
-    cvWindow.document.write(cvContent);
-
-    // Once the CV content is loaded, trigger the print dialog
-    cvWindow.onload = function () {
-        cvWindow.print();
-    };
+    return cvContent;
 }
 
+
+  
          
         function showNotification() {
             const notification = document.getElementById('notification');
