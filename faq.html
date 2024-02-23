@@ -62,26 +62,26 @@
             overflow-y: auto;
         }
 
-        .chat-message {
-            margin-bottom: 10px;
-            padding: 10px;
-            border-radius: 5px;
-        }
-
-        .chat-message.user {
-            background-color: #f2f2f2;
-            color: #333;
-        }
-
-        .chat-message.bot {
-            background-color: #4CAF50;
-            color: white;
-        }
-
         #faq,
         #contact-container,
         #cv-container {
             display: none;
+        }
+
+        .chat-message {
+            margin-bottom: 10px;
+        }
+
+        .chat-message:last-child {
+            margin-bottom: 0;
+        }
+
+        .chat-message.user {
+            color: #333;
+        }
+
+        .chat-message.bot {
+            color: #4CAF50;
         }
 
         #notification {
@@ -171,7 +171,6 @@
             { question: "How secure is my personal information on XIMFO?", answer: "XIMFO prioritizes the security of user information. We use encryption protocols to safeguard your personal data and ensure a secure online environment." }
         ];
 
-
         function scrollToSection(sectionId) {
             document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
         }
@@ -187,7 +186,7 @@
             const chatMessages = document.getElementById('chat-messages');
 
             // Add user message to the chat
-            chatMessages.innerHTML += `<div class="chat-message user">${userInput}</div>`;
+            chatMessages.innerHTML += `<div>User: ${userInput}</div>`;
 
             // Find the most similar question in the FAQ using a simple similarity calculation
             const mostSimilarQuestion = findMostSimilarQuestion(userInput);
@@ -196,7 +195,7 @@
             const answer = faq.find(item => item.question === mostSimilarQuestion)?.answer || "I'm sorry, I don't understand that question.";
 
             // Add bot's response to the chat
-            chatMessages.innerHTML += `<div class="chat-message bot">${answer}</div>`;
+            chatMessages.innerHTML += `<div>Bot: ${answer}</div>`;
 
             // Clear user input
             document.getElementById('user-input').value = '';
@@ -207,12 +206,12 @@
             let maxSimilarity = -1;
             let mostSimilarQuestion = '';
 
-            faq            .forEach(item => {
+            faq.forEach(item => {
                 const similarity = calculateSimilarity(userInput, item.question);
 
                 if (similarity > maxSimilarity) {
                     maxSimilarity = similarity;
-                    mostSimilarQuestion = item.question;
+                                    mostSimilarQuestion = item.question;
                 }
             });
 
@@ -244,90 +243,92 @@
         });
 
         function printCV() {
-            const cvContent = getCVContent();
+    const cvContent = getCVContent();
 
-            // Open a new window to display the CV content
-            const cvWindow = window.open('', '_blank');
+    // Open a new window to display the CV content
+    const cvWindow = window.open('', '_blank');
 
-            // Set the CV content as the source for the new window
-            cvWindow.document.write(cvContent);
+    // Set the CV content as the source for the new window
+    cvWindow.document.write(cvContent);
 
-            // Once the CV content is loaded, trigger the print dialog
-            cvWindow.onload = function () {
-                cvWindow.print();
-            };
-        }
+    // Once the CV content is loaded, trigger the print dialog
+    cvWindow.onload = function () {
+        cvWindow.print();
+    };
+}
 
-        function saveCV() {
-            const cvContent = getCVContent();
+function saveCV() {
+    const cvContent = getCVContent();
 
-            // Use html2pdf to create a PDF and save it
-            html2pdf().from(cvContent).save('CV.pdf');
-        }
+    // Use html2pdf to create a PDF and save it
+    html2pdf().from(cvContent).save('CV.pdf');
+}
 
-        function getCVContent() {
-            // Gather CV details
-            const cvName = document.getElementById('cv-name').value;
-            const cvEmail = document.getElementById('cv-email').value;
-            const cvPhone = document.getElementById('cv-phone').value;
-            const cvAddress = document.getElementById('cv-address').value;
-            const cvEducation = document.getElementById('cv-education').value;
-            const cvExperience = document.getElementById('cv-experience').value;
-            const cvSkills = document.getElementById('cv-skills').value;
-            const cvCertifications = document.getElementById('cv-certifications').value;
-            const cvLanguages = document.getElementById('cv-languages').value;
+function getCVContent() {
+    // Gather CV details
+    const cvName = document.getElementById('cv-name').value;
+    const cvEmail = document.getElementById('cv-email').value;
+    const cvPhone = document.getElementById('cv-phone').value;
+    const cvAddress = document.getElementById('cv-address').value;
+    const cvEducation = document.getElementById('cv-education').value;
+    const cvExperience = document.getElementById('cv-experience').value;
+    const cvSkills = document.getElementById('cv-skills').value;
+    const cvCertifications = document.getElementById('cv-certifications').value;
+    const cvLanguages = document.getElementById('cv-languages').value;
 
-            const cvContent = `
-                <html>
-                <head>
-                    <title>${cvName}'s CV</title>
-                    <style>
-                        body {
-                            font-family: 'Arial', sans-serif;
-                            margin: 20px;
-                            padding: 20px;
-                            background-color: #f9f9f9;
-                        }
+  const cvContent = `
+        <html>
+        <head>
+            <title>${cvName}'s CV</title>
+            <style>
+                body {
+                    font-family: 'Arial', sans-serif;
+                    margin: 20px;
+                    padding: 20px;
+                    background-color: #f9f9f9;
+                }
 
-                        h2 {
-                            color: #333;
-                            border-bottom: 2px solid #333;
-                            padding-bottom: 5px;
-                        }
+                h2 {
+                    color: #333;
+                    border-bottom: 2px solid #333;
+                    padding-bottom: 5px;
+                }
 
-                        p {
-                            margin-bottom: 10px;
-                        }
+                p {
+                    margin-bottom: 10px;
+                }
 
-                        h3 {
-                            color: #333;
-                            margin-top: 15px;
-                        }
-                    </style>
-                </head>
-                <body>
-                    <h2>${cvName} CV</h2>
-                    <p><strong>Email:</strong> ${cvEmail}</p>
-                    <p><strong>Phone:</strong> ${cvPhone}</p>
-                    <p><strong>Address:</strong></p>
-                    <p>${cvAddress}</p>
-                    <h3>Education</h3>
-                    <p>${cvEducation}</p>
-                    <h3>Work Experience</h3>
-                    <p>${cvExperience}</p>
-                    <h3>Skills</h3>
-                    <p>${cvSkills}</p>
-                    <h3>Certifications</h3>
-                    <p>${cvCertifications}</p>
-                    <h3>Languages</h3>
-                    <p>${cvLanguages}</p>
-                </body>
-                </html>
-            `;
+                h3 {
+                    color: #333;
+                    margin-top: 15px;
+                }
+            </style>
+        </head>
+        <body>
+            <h2>${cvName} CV</h2>
+            <p><strong>Email:</strong> ${cvEmail}</p>
+            <p><strong>Phone:</strong> ${cvPhone}</p>
+            <p><strong>Address:</strong></p>
+            <p>${cvAddress}</p>
+            <h3>Education</h3>
+            <p>${cvEducation}</p>
+            <h3>Work Experience</h3>
+            <p>${cvExperience}</p>
+            <h3>Skills</h3>
+            <p>${cvSkills}</p>
+            <h3>Certifications</h3>
+            <p>${cvCertifications}</p>
+            <h3>Languages</h3>
+            <p>${cvLanguages}</p>
+        </body>
+        </html>
+    `;
 
-            return cvContent;
-        }
+    return cvContent;
+}
 
+  
+         
         function showNotification() {
             const notification = document.getElementById('notification');
             notification.style.display = 'block';
@@ -342,5 +343,3 @@
 </body>
 
 </html>
-
-
