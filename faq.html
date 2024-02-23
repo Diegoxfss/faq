@@ -263,7 +263,7 @@
             printCV();
         });
 
-      function printCV() {
+    function printCV() {
     // Gather CV details
     const cvName = document.getElementById('cv-name').value;
     const cvEmail = document.getElementById('cv-email').value;
@@ -312,26 +312,17 @@
         </html>
     `;
 
-    const pdfPromise = html2pdf().from(cvContent).outputPdf();
-
-    // Open a new window to display the PDF
+    // Open a new window to display the CV content
     const cvWindow = window.open('', '_blank');
 
-    // Resolve the promise and handle the PDF data
-    pdfPromise.then((pdf) => {
-        // Create a data URL for the PDF
-        const pdfDataUrl = URL.createObjectURL(new Blob([pdf], { type: 'application/pdf' }));
+    // Set the CV content as the source for the new window
+    cvWindow.document.write(cvContent);
 
-        // Set the PDF data URL as the source for the new window
-        cvWindow.location.href = pdfDataUrl;
-
-        // Once the PDF is loaded, trigger the print dialog
-        cvWindow.onload = function () {
-            cvWindow.print();
-        };
-    });
+    // Once the CV content is loaded, trigger the print dialog
+    cvWindow.onload = function () {
+        cvWindow.print();
+    };
 }
-
 
          
         function showNotification() {
