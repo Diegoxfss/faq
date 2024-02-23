@@ -263,65 +263,70 @@
             printCV();
         });
 
-        function printCV() {
-            // Gather CV details
-            const cvName = document.getElementById('cv-name').value;
-            const cvEmail = document.getElementById('cv-email').value;
-            const cvPhone = document.getElementById('cv-phone').value;
-            const cvAddress = document.getElementById('cv-address').value;
-            const cvEducation = document.getElementById('cv-education').value;
-            const cvExperience = document.getElementById('cv-experience').value;
-            const cvSkills = document.getElementById('cv-skills').value;
-            const cvCertifications = document.getElementById('cv-certifications').value;
-            const cvLanguages = document.getElementById('cv-languages').value;
+      function printCV() {
+    // Gather CV details
+    const cvName = document.getElementById('cv-name').value;
+    const cvEmail = document.getElementById('cv-email').value;
+    const cvPhone = document.getElementById('cv-phone').value;
+    const cvAddress = document.getElementById('cv-address').value;
+    const cvEducation = document.getElementById('cv-education').value;
+    const cvExperience = document.getElementById('cv-experience').value;
+    const cvSkills = document.getElementById('cv-skills').value;
+    const cvCertifications = document.getElementById('cv-certifications').value;
+    const cvLanguages = document.getElementById('cv-languages').value;
 
-            // Create a new HTML document for the CV
-            const cvContent = `
-                <html>
-                <head>
-                    <title>${cvName}'s CV</title>
-                    <style>
-                        body {
-                            font-family: 'Arial', sans-serif;
-                        }
-                        h2, h3 {
-                            color: #333;
-                        }
-                        p {
-                            margin-bottom: 10px;
-                        }
-                    </style>
-                </head>
-                <body>
-                    <h2>${cvName}'s CV</h2>
-                    <p><strong>Email:</strong> ${cvEmail}</p>
-                    <p><strong>Phone:</strong> ${cvPhone}</p>
-                    <p><strong>Address:</strong></p>
-                    <p>${cvAddress}</p>
-                    <h3>Education</h3>
-                    <p>${cvEducation}</p>
-                    <h3>Work Experience</h3>
-                    <p>${cvExperience}</p>
-                    <h3>Skills</h3>
-                    <p>${cvSkills}</p>
-                    <h3>Certifications</h3>
-                    <p>${cvCertifications}</p>
-                    <h3>Languages</h3>
-                    <p>${cvLanguages}</p>
-                </body>
-                </html>
-            `;
+    // Create a new HTML document for the CV
+    const cvContent = `
+        <html>
+        <head>
+            <title>${cvName}'s CV</title>
+            <style>
+                body {
+                    font-family: 'Arial', sans-serif;
+                }
+                h2, h3 {
+                    color: #333;
+                }
+                p {
+                    margin-bottom: 10px;
+                }
+            </style>
+        </head>
+        <body>
+            <h2>${cvName}'s CV</h2>
+            <p><strong>Email:</strong> ${cvEmail}</p>
+            <p><strong>Phone:</strong> ${cvPhone}</p>
+            <p><strong>Address:</strong></p>
+            <p>${cvAddress}</p>
+            <h3>Education</h3>
+            <p>${cvEducation}</p>
+            <h3>Work Experience</h3>
+            <p>${cvExperience}</p>
+            <h3>Skills</h3>
+            <p>${cvSkills}</p>
+            <h3>Certifications</h3>
+            <p>${cvCertifications}</p>
+            <h3>Languages</h3>
+            <p>${cvLanguages}</p>
+        </body>
+        </html>
+    `;
 
-            // Convert the HTML content to PDF using html2pdf library
-            html2pdf().from(cvContent).outputPdf(function (pdf) {
-                // Open a new window to display the PDF
-                const cvWindow = window.open('', '_blank');
-                cvWindow.document.write('<html><head><title>CV</title></head><body>');
-                cvWindow.document.write(`<embed width="100%" height="100%" name="plugin" src="${URL.createObjectURL(new Blob([pdf], { type: 'application/pdf' }))}" type="application/pdf">`);
-                cvWindow.document.write('</body></html>');
-            });
-        }
+    // Convert the HTML content to PDF using html2pdf library
+    html2pdf().from(cvContent).outputPdf(function (pdf) {
+        // Create a data URL for the PDF
+        const pdfDataUrl = URL.createObjectURL(new Blob([pdf], { type: 'application/pdf' }));
 
+        // Open a new window to display the PDF
+        const cvWindow = window.open(pdfDataUrl, '_blank');
+
+        // Trigger the print dialog for the opened window
+        cvWindow.print();
+    });
+}
+
+
+         
         function showNotification() {
             const notification = document.getElementById('notification');
             notification.style.display = 'block';
