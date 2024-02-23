@@ -259,9 +259,7 @@ textarea {
 
         <label for="cv-languages">Languages:</label>
         <textarea id="cv-languages" name="cv-languages"></textarea>
-
-        <!-- Add "Save CV" and "Print CV" buttons -->
-        <button type="button" onclick="saveCV()">Save CV</button>
+        
         <button type="button" onclick="printCV()">Print CV</button>
     </form>
 </div>
@@ -385,18 +383,7 @@ textarea {
     };
 }
 
-function saveCV() {
-    const cvContent = getCVContent();
 
-    // Use html2pdf to create a PDF and save it
-    html2pdf().from(cvContent).outputPdf().then(pdf => {
-        const blob = new Blob([pdf], { type: 'application/pdf' });
-        const link = document.createElement('a');
-        link.href = window.URL.createObjectURL(blob);
-        link.download = 'CV.pdf';
-        link.click();
-    });
-}
 
 
 function getCVContent() {
