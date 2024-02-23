@@ -301,78 +301,78 @@ textarea {
             { question: "How secure is my personal information on XIMFO?", answer: "XIMFO prioritizes the security of user information. We use encryption protocols to safeguard your personal data and ensure a secure online environment." }
         ];
 
-function scrollToSection(sectionId) {
-    document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
-}
-
-function showSection(sectionId) {
-    document.getElementById('faq').style.display = sectionId === 'faq' ? 'block' : 'none';
-    document.getElementById('contact-container').style.display = sectionId === 'contact' ? 'block' : 'none';
-    document.getElementById('cv-container').style.display = sectionId === 'cv' ? 'block' : 'none';
-}
-
-function askQuestion() {
-    const userInput = document.getElementById('user-input').value;
-    const chatMessages = document.getElementById('chat-messages');
-
-    // Add user message to the chat
-    chatMessages.innerHTML += `<div>User: ${userInput}</div>`;
-
-    // Find the most similar question in the FAQ using a simple similarity calculation
-    const mostSimilarQuestion = findMostSimilarQuestion(userInput);
-
-    // Find the corresponding answer
-    const answer = faq.find(item => item.question === mostSimilarQuestion)?.answer || "I'm sorry, I don't understand that question.";
-
-    // Add bot's response to the chat
-    chatMessages.innerHTML += `<div>Bot: ${answer}</div>`;
-
-    // Clear user input
-    document.getElementById('user-input').value = '';
-}
-
-function findMostSimilarQuestion(userInput) {
-    // Use a simple similarity calculation
-    let maxSimilarity = -1;
-    let mostSimilarQuestion = '';
-
-    faq.forEach(item => {
-        const similarity = calculateSimilarity(userInput, item.question);
-
-        if (similarity > maxSimilarity) {
-            maxSimilarity = similarity;
-            mostSimilarQuestion = item.question;
+        function scrollToSection(sectionId) {
+            document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
         }
-    });
 
-    return mostSimilarQuestion;
-}
+        function showSection(sectionId) {
+            document.getElementById('faq').style.display = sectionId === 'faq' ? 'block' : 'none';
+            document.getElementById('contact-container').style.display = sectionId === 'contact' ? 'block' : 'none';
+            document.getElementById('cv-container').style.display = sectionId === 'cv' ? 'block' : 'none';
+        }
 
-function calculateSimilarity(str1, str2) {
-    // A simple similarity calculation, you can replace it with a more sophisticated algorithm if needed
-    const set1 = new Set(str1.toLowerCase().split(' '));
-    const set2 = new Set(str2.toLowerCase().split(' '));
+        function askQuestion() {
+            const userInput = document.getElementById('user-input').value;
+            const chatMessages = document.getElementById('chat-messages');
 
-    const intersection = new Set([...set1].filter(x => set2.has(x)));
-    const union = new Set([...set1, ...set2]);
+            // Add user message to the chat
+            chatMessages.innerHTML += `<div>User: ${userInput}</div>`;
 
-    return intersection.size / union.size;
-}
+            // Find the most similar question in the FAQ using a simple similarity calculation
+            const mostSimilarQuestion = findMostSimilarQuestion(userInput);
 
-document.getElementById('contact-form').addEventListener('submit', function (event) {
-    event.preventDefault();
-    // Perform form submission logic here
-    // For demonstration purposes, let's show a notification
-    showNotification();
-});
+            // Find the corresponding answer
+            const answer = faq.find(item => item.question === mostSimilarQuestion)?.answer || "I'm sorry, I don't understand that question.";
 
-document.getElementById('cv-form').addEventListener('submit', function (event) {
-    event.preventDefault();
-    // Logic to handle CV submission/printing
-    printCV();
-});
+            // Add bot's response to the chat
+            chatMessages.innerHTML += `<div>Bot: ${answer}</div>`;
 
-function printCV() {
+            // Clear user input
+            document.getElementById('user-input').value = '';
+        }
+
+        function findMostSimilarQuestion(userInput) {
+            // Use a simple similarity calculation
+            let maxSimilarity = -1;
+            let mostSimilarQuestion = '';
+
+            faq.forEach(item => {
+                const similarity = calculateSimilarity(userInput, item.question);
+
+                if (similarity > maxSimilarity) {
+                    maxSimilarity = similarity;
+                                    mostSimilarQuestion = item.question;
+                }
+            });
+
+            return mostSimilarQuestion;
+        }
+
+        function calculateSimilarity(str1, str2) {
+            // A simple similarity calculation, you can replace it with a more sophisticated algorithm if needed
+            const set1 = new Set(str1.toLowerCase().split(' '));
+            const set2 = new Set(str2.toLowerCase().split(' '));
+
+            const intersection = new Set([...set1].filter(x => set2.has(x)));
+            const union = new Set([...set1, ...set2]);
+
+            return intersection.size / union.size;
+        }
+
+        document.getElementById('contact-form').addEventListener('submit', function (event) {
+            event.preventDefault();
+            // Perform form submission logic here
+            // For demonstration purposes, let's show a notification
+            showNotification();
+        });
+
+        document.getElementById('cv-form').addEventListener('submit', function (event) {
+            event.preventDefault();
+            // Logic to handle CV submission/printing
+            printCV();
+        });
+
+        function printCV() {
     const cvContent = getCVContent();
 
     // Open a new window to display the CV content
@@ -381,7 +381,7 @@ function printCV() {
     // Set the CV content as the source for the new window
     cvWindow.document.write(cvContent);
 
-    // Wait for the content to be fully loaded before triggering the print dialog
+    // Once the CV content is loaded, trigger the print dialog
     cvWindow.onload = function () {
         cvWindow.print();
     };
@@ -393,18 +393,13 @@ function saveCV() {
     // Use html2pdf to create a PDF and save it
     html2pdf().from(cvContent).outputPdf().then(pdf => {
         const blob = new Blob([pdf], { type: 'application/pdf' });
-
-        // Create a temporary link and trigger the download
         const link = document.createElement('a');
         link.href = window.URL.createObjectURL(blob);
         link.download = 'CV.pdf';
-        document.body.appendChild(link); // Required for Firefox
         link.click();
-
-        // Remove the temporary link
-        document.body.removeChild(link);
     });
 }
+
 
 function getCVContent() {
     // Gather CV details
@@ -417,7 +412,7 @@ function getCVContent() {
     const cvSkills = document.getElementById('cv-skills').value;
     const cvCertifications = document.getElementById('cv-certifications').value;
     const cvLanguages = document.getElementById('cv-languages').value;
-
+    
     const cvContent = `
         <html>
         <head>
@@ -447,7 +442,7 @@ function getCVContent() {
             </style>
         </head>
         <body>
-            <h2>${cvName}</h2>
+            <h2>${cvName} CV</h2>
             <p><strong>Email:</strong> ${cvEmail}</p>
             <p><strong>Phone:</strong> ${cvPhone}</p>
             <p><strong>Address:</strong></p>
@@ -468,17 +463,19 @@ function getCVContent() {
 
     return cvContent;
 }
+  
+         
+        function showNotification() {
+            const notification = document.getElementById('notification');
+            notification.style.display = 'block';
 
-function showNotification() {
-    const notification = document.getElementById('notification');
-    notification.style.display = 'block';
-
-    // Hide the notification after 3 seconds
-    setTimeout(() => {
-        notification.style.display = 'none';
-    }, 3000);
-}
+            // Hide the notification after 3 seconds
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 3000);
+        }
     </script>
+
 </body>
 
 </html> 
