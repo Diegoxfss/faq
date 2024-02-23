@@ -233,12 +233,12 @@ textarea {
    <div id="cv-container" style="display: none;">
     <h2></h2>
     <form id="cv-form">
-        <label for="cv-name">Full Name:</label>
-        <input type="text" id="cv-name" name="cv-name" required>
+     <label for="cv-name">Full Name:</label>
+     <input type="text" id="cv-name" name="cv-name" required>
 
         <label for="cv-email">Email:</label>
         <input type="email" id="cv-email" name="cv-email" required>
-
+        
         <label for="cv-phone">Phone Number:</label>
         <input type="tel" id="cv-phone" name="cv-phone" required>
 
@@ -409,7 +409,7 @@ function getCVContent() {
     const cvSkills = document.getElementById('cv-skills').value;
     const cvCertifications = document.getElementById('cv-certifications').value;
     const cvLanguages = document.getElementById('cv-languages').value;
-
+    
     const cvContent = `
         <html>
         <head>
