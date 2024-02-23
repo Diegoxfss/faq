@@ -4,22 +4,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Include jsPDF library -->
     <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
-
-    <!-- Include html2pdf.js library -->
     <script defer src="https://cdn.jsdelivr.net/npm/html2pdf.js@0.10.0"></script>
-
-    <!-- Your existing style tag -->
-
-    <!-- Include html2pdf.bundle.js script -->
     <script defer src="https://rawgit.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></script>
+    <title>XIMFO FAQ Chatbot</title>
     <style>
-        /* Add your styling here */
         body {
             font-family: 'Arial', sans-serif;
             margin: 0;
             padding: 0;
+            background-color: #f9f9f9;
         }
 
         #navbar {
@@ -44,7 +38,7 @@
         #chat-container,
         #contact-container,
         #cv-container {
-            max-width: 400px;
+            max-width: 800px;
             margin: 20px auto;
             border: 1px solid #ccc;
             padding: 20px;
@@ -53,12 +47,8 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
-        #user-input,
-        #contact-form input,
-        #contact-form textarea,
-        #cv-form input,
-        #cv-form textarea {
-            width: 100%;
+        #user-input {
+            width: calc(100% - 20px);
             padding: 10px;
             margin-bottom: 15px;
             box-sizing: border-box;
@@ -72,8 +62,26 @@
             overflow-y: auto;
         }
 
-        #faq {
-            padding-top: 50px;
+        #faq,
+        #contact-container,
+        #cv-container {
+            display: none;
+        }
+
+        .chat-message {
+            margin-bottom: 10px;
+        }
+
+        .chat-message:last-child {
+            margin-bottom: 0;
+        }
+
+        .chat-message.user {
+            color: #333;
+        }
+
+        .chat-message.bot {
+            color: #4CAF50;
         }
 
         #notification {
@@ -87,77 +95,7 @@
             width: 100%;
             z-index: 1;
         }
-        /* Additional styles for the CV */
-#cv-container {
-    background-color: #f9f9f9;
-}
-
-#cv-form {
-    display: flex;
-    flex-direction: column;
-}
-
-label {
-    margin-top: 10px;
-    font-weight: bold;
-}
-
-input[type="text"],
-input[type="email"],
-input[type="tel"],
-textarea {
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 10px;
-    margin-top: 5px;
-}
-
-textarea {
-    height: 100px; /* Adjust as needed */
-}
-
-button {
-    background-color: #4caf50;
-    color: white;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 15px;
-    font-size: 16px;
-}
-
-button:hover {
-    background-color: #45a049;
-}
-
-/* Style the CV content */
-h2, h3 {
-    color: #333;
-    margin-bottom: 5px;
-}
-
-p {
-    margin-bottom: 10px;
-}
-
-/* Responsive styles */
-@media only screen and (max-width: 600px) {
-    #cv-container {
-        max-width: 100%;
-    }
-
-    input[type="text"],
-    input[type="email"],
-    input[type="tel"],
-    textarea {
-        width: 100%;
-    }
-}
-
     </style>
-    <script src="https://rawgit.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></script>
-    <title>XIMFO FAQ Chatbot</title>
 </head>
 
 <body>
@@ -194,42 +132,13 @@ p {
         </form>
     </div>
 
-   <div id="cv-container" style="display: none;">
-    <h2>CV</h2>
-    <form id="cv-form">
-        <label for="cv-name">Full Name:</label>
-        <input type="text" id="cv-name" name="cv-name" required>
+    <div id="cv-container" style="display: none;">
+        <h2>CV</h2>
+        <form id="cv-form">
+            <!-- Your CV form content -->
+        </form>
+    </div>
 
-        <label for="cv-email">Email:</label>
-        <input type="email" id="cv-email" name="cv-email" required>
-
-        <label for="cv-phone">Phone Number:</label>
-        <input type="tel" id="cv-phone" name="cv-phone" required>
-
-        <label for="cv-address">Address:</label>
-        <textarea id="cv-address" name="cv-address" required></textarea>
-
-        <label for="cv-education">Education:</label>
-        <textarea id="cv-education" name="cv-education" required></textarea>
-
-        <label for="cv-experience">Work Experience:</label>
-        <textarea id="cv-experience" name="cv-experience" required></textarea>
-
-        <label for="cv-skills">Skills:</label>
-        <textarea id="cv-skills" name="cv-skills" required></textarea>
-
-        <label for="cv-certifications">Certifications:</label>
-        <textarea id="cv-certifications" name="cv-certifications"></textarea>
-
-        <label for="cv-languages">Languages:</label>
-        <textarea id="cv-languages" name="cv-languages"></textarea>
-
-        <!-- Add "Save CV" and "Print CV" buttons -->
-        <button type="button" onclick="saveCV()">Save CV</button>
-        <button type="button" onclick="printCV()">Print CV</button>
-    </form>
-</div>
-    
     <div id="chat-container">
         <div id="chat-messages"></div>
         <input type="text" id="user-input" placeholder="Type your question...">
