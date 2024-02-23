@@ -388,8 +388,15 @@ function saveCV() {
     const cvContent = getCVContent();
 
     // Use html2pdf to create a PDF and save it
-    html2pdf().from(cvContent).save('CV.pdf');
+    html2pdf().from(cvContent).outputPdf().then(pdf => {
+        const blob = new Blob([pdf], { type: 'application/pdf' });
+        const link = document.createElement('a');
+        link.href = window.URL.createObjectURL(blob);
+        link.download = 'CV.pdf';
+        link.click();
+    });
 }
+
 
 function getCVContent() {
     // Gather CV details
